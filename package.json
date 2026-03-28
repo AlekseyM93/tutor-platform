@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
-    "build:github-pages": "node scripts/build-github-pages.mjs",
+    "build:github-pages": "npx tsx scripts/build-github-pages.ts",
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
@@ -14,7 +14,7 @@
     "db:seed": "prisma db seed"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -39,6 +39,7 @@
     "@types/react-dom": "^19.1.7",
     "prisma": "^6.16.0",
     "tailwindcss": "^4.1.12",
+    "tsx": "^4.19.4",
     "typescript": "^5.9.2"
   }
 }

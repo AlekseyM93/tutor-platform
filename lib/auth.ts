@@ -84,7 +84,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 
 export async function getSession() {
-  if (process.env.NEXT_STATIC_EXPORT === 'true') {
+  if (process.env.NEXT_PAGES_EXPORT_BUILD === 'true') {
     return null;
   }
   return auth();

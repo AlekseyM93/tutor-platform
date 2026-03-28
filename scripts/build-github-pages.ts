@@ -31,7 +31,7 @@ try {
   execSync('npx next build', {
     stdio: 'inherit',
     cwd: root,
-    env: { ...process.env, NEXT_STATIC_EXPORT: 'true' }
+    env: { ...process.env, NEXT_PAGES_EXPORT_BUILD: 'true' }
   });
   const nojekyll = path.join(root, 'out', '.nojekyll');
   fs.writeFileSync(nojekyll, '', 'utf8');

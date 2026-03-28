@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 
-const isGithubPages = process.env.NEXT_STATIC_EXPORT === 'true';
+const isGithubPages = process.env.NEXT_PAGES_EXPORT_BUILD === 'true';
 const basePath = (process.env.NEXT_BASE_PATH || '').replace(/\/$/, '');
 
 const nextConfig: NextConfig = {

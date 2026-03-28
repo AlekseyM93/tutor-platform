@@ -1,19 +1,18 @@
-# Публикует статический сайт в ветку gh-pages (папка out/).
+# Сборка Next.js (статический экспорт) → папка docs/ на той же ветке (master/main).
+# GitHub Pages: Settings → Source «Deploy from a branch» → ваша ветка (master) → Folder /docs
 #
-# ВАЖНО — иначе снова будет README:
-# Settings → Pages → Build and deployment → Source: «Deploy from a branch»
-#   Branch: gh-pages  /  Folder: / (root)
+# Пуш только в docs/ не перезапускает workflow (paths-ignore), чтобы не было цикла.
 #
-# Не используйте для сайта ветку main: в ней нет index.html в корне — GitHub покажет README.
-#
-# URL проекта: https://<владелец>.github.io/<имя-репозитория>/
-# Репозиторий <владелец>.github.io → сайт в корне домена, base path задаётся шагом ниже.
+# Примечание: в docs попадают сгенерированные файлы; «логика» приложения — в JS-чанках Next
+# (_next/static/chunks/*.js). Минимальный HTML у страниц нужен браузеру как точка входа.
 
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -42,16 +43,16 @@ jobs:
         env:
           DATABASE_URL: postgresql://user:pass@localhost:5432/db
 
-      - name: Настроить base path для GitHub Pages
+      - name: Настроить NEXT_BASE_PATH для GitHub Pages
         run: |
           OWNER="${{ github.repository_owner }}"
           NAME="${{ github.event.repository.name }}"
           if [ "$NAME" = "$OWNER.github.io" ]; then
             echo "NEXT_BASE_PATH=" >> "$GITHUB_ENV"
-            echo "Режим: пользовательский сайт https://${OWNER}.github.io/"
+            echo "Режим: https://${OWNER}.github.io/"
           else
             echo "NEXT_BASE_PATH=/$NAME" >> "$GITHUB_ENV"
-            echo "Режим: сайт проекта https://${OWNER}.github.io/${NAME}/"
+            echo "Режим: https://${OWNER}.github.io/${NAME}/"
           fi
 
       - name: Сборка статического сайта
@@ -59,19 +60,19 @@ jobs:
         env:
           DATABASE_URL: postgresql://user:pass@localhost:5432/db
 
-      - name: Отключить Jekyll (чтобы не ломались пути с _)
-        run: touch out/.nojekyll
-
       - name: Проверить артефакт сборки
         run: |
-          test -f out/index.html || { echo "::error::Нет out/index.html — проверьте логи сборки"; exit 1; }
-          echo "Файлов в out: $(find out -type f | wc -l)"
+          test -f out/index.html || { echo "::error::Нет out/index.html"; exit 1; }
+          test -f out/.nojekyll || { echo "::error::Нет out/.nojekyll"; exit 1; }
 
-      - name: Залить в ветку gh-pages
+      - name: Записать сборку в docs/ на ${{ github.ref_name }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          force_orphan: true
+          publish_branch: ${{ github.ref_name }}
+          destination_dir: docs
+          keep_files: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: 'chore(pages): обновить docs/ для GitHub Pages'

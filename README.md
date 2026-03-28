@@ -2,19 +2,22 @@
 
 Production-oriented платформа для репетиторов и учеников: уроки, видеокомнаты, материалы и записи.
 
-## Сайт на GitHub Pages (если открывается README вместо приложения)
+## Сайт на GitHub Pages (ветка master / main)
 
-Так бывает, когда в **Settings → Pages** выбрана ветка **main** и папка **/**: в корне репозитория нет `index.html`, GitHub показывает `README.md`.
+Сайт собирается в CI и **кладётся в папку `docs/`** на той же ветке, с которой вы пушите (**master** или **main**). Так в **Pages** можно оставить **именно master**, без отдельной ветки `gh-pages`.
 
-Сделайте так:
+**Почему не «всё на чистом JS»:** GitHub Pages отдаёт только статические файлы. У Next после экспорта интерфейс — это **JS-бандлы** в `docs/_next/static/chunks/*.js`; у страниц остаётся **короткий HTML** как точка входа (так устроены браузеры).
 
-1. Дождитесь успешного запуска workflow **Deploy to GitHub Pages** (вкладка **Actions**). При необходимости запустите вручную (**Run workflow**).
-2. **Settings → Pages → Build and deployment**
-3. **Source**: **Deploy from a branch**
-4. **Branch**: **gh-pages**, папка **/ (root)** — не main.
-5. Откройте сайт: `https://<ваш-логин>.github.io/<имя-репозитория>/` (слэш в конце желателен).
+### Настройка
 
-Репозиторий вида `логин.github.io` для сайта в корне домена обрабатывается в workflow автоматически (пустой base path).
+1. Запушьте код с `.github/workflows/github-pages.yml`.
+2. **Actions** → **Deploy to GitHub Pages** → дождитесь успеха (или **Run workflow**).
+3. **Settings → Pages**: **Source** — *Deploy from a branch*, **Branch** — **master** (или **main**), **Folder** — **`/docs`** (не `/ (root)`).
+4. Сайт: `https://<логин>.github.io/tutor-platform/` (со слэшем в конце).
+
+Пуши, которые меняют только `docs/`, **не перезапускают** workflow (чтобы не было бесконечного цикла коммитов).
+
+Репозиторий `логин.github.io`: в workflow для него выставляется пустой `NEXT_BASE_PATH`.
 
 ## Основные возможности
 

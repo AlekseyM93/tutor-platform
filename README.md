@@ -1,6 +1,20 @@
-# Tutor Platform
+# РепетиторПлатформа
 
 Production-oriented платформа для репетиторов и учеников: уроки, видеокомнаты, материалы и записи.
+
+## Сайт на GitHub Pages (если открывается README вместо приложения)
+
+Так бывает, когда в **Settings → Pages** выбрана ветка **main** и папка **/**: в корне репозитория нет `index.html`, GitHub показывает `README.md`.
+
+Сделайте так:
+
+1. Дождитесь успешного запуска workflow **Deploy to GitHub Pages** (вкладка **Actions**). При необходимости запустите вручную (**Run workflow**).
+2. **Settings → Pages → Build and deployment**
+3. **Source**: **Deploy from a branch**
+4. **Branch**: **gh-pages**, папка **/ (root)** — не main.
+5. Откройте сайт: `https://<ваш-логин>.github.io/<имя-репозитория>/` (слэш в конце желателен).
+
+Репозиторий вида `логин.github.io` для сайта в корне домена обрабатывается в workflow автоматически (пустой base path).
 
 ## Основные возможности
 

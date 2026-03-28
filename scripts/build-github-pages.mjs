@@ -33,6 +33,8 @@ try {
     cwd: root,
     env: { ...process.env, NEXT_STATIC_EXPORT: 'true' }
   });
+  const nojekyll = path.join(root, 'out', '.nojekyll');
+  fs.writeFileSync(nojekyll, '', 'utf8');
 } finally {
   restoreApi();
 }

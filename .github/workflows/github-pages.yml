@@ -1,26 +1,30 @@
-# Собирает статический экспорт Next.js и публикует в GitHub Pages.
-# В настройках репозитория: Settings → Pages → Build and deployment → Source: GitHub Actions.
+# Публикует статический сайт в ветку gh-pages (папка out/).
 #
-# Сайт проекта: https://<user>.github.io/<repo>/
-# Для репозитория вида <user>.github.io (сайт на корневом домене) задайте в workflow переменную NEXT_BASE_PATH пустой (см. ниже).
+# ВАЖНО — иначе снова будет README:
+# Settings → Pages → Build and deployment → Source: «Deploy from a branch»
+#   Branch: gh-pages  /  Folder: / (root)
+#
+# Не используйте для сайта ветку main: в ней нет index.html в корне — GitHub покажет README.
+#
+# URL проекта: https://<владелец>.github.io/<имя-репозитория>/
+# Репозиторий <владелец>.github.io → сайт в корне домена, base path задаётся шагом ниже.
 
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +34,7 @@ jobs:
           node-version: '22'
           cache: npm
 
-      - name: Install dependencies
+      - name: Установка зависимостей
         run: npm ci
 
       - name: Prisma generate
@@ -38,25 +42,36 @@ jobs:
         env:
           DATABASE_URL: postgresql://user:pass@localhost:5432/db
 
-      - name: Build static site for Pages
+      - name: Настроить base path для GitHub Pages
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          NAME="${{ github.event.repository.name }}"
+          if [ "$NAME" = "$OWNER.github.io" ]; then
+            echo "NEXT_BASE_PATH=" >> "$GITHUB_ENV"
+            echo "Режим: пользовательский сайт https://${OWNER}.github.io/"
+          else
+            echo "NEXT_BASE_PATH=/$NAME" >> "$GITHUB_ENV"
+            echo "Режим: сайт проекта https://${OWNER}.github.io/${NAME}/"
+          fi
+
+      - name: Сборка статического сайта
         run: npm run build:github-pages
         env:
-          NEXT_STATIC_EXPORT: 'true'
-          # Имя репозитория в URL: /tutor-platform/ и т.п.
-          NEXT_BASE_PATH: /${{ github.event.repository.name }}
-          # Если репозиторий username.github.io (сайт в корне домена) — задайте NEXT_BASE_PATH: ''
           DATABASE_URL: postgresql://user:pass@localhost:5432/db
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: out
+      - name: Отключить Jekyll (чтобы не ломались пути с _)
+        run: touch out/.nojekyll
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Проверить артефакт сборки
+        run: |
+          test -f out/index.html || { echo "::error::Нет out/index.html — проверьте логи сборки"; exit 1; }
+          echo "Файлов в out: $(find out -type f | wc -l)"
+
+      - name: Залить в ветку gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com

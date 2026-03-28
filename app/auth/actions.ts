@@ -1,10 +1,7 @@
-'use server';
+'use client';
 
-import { hash } from 'bcryptjs';
-import { AuthError } from 'next-auth';
+import { signIn } from 'next-auth/react';
 import { z } from 'zod';
-import { db } from '@/lib/db';
-import { signIn } from '@/lib/auth';
 
 const registerSchema = z
   .object({
@@ -42,29 +39,29 @@ export async function registerAction(
     return { error: 'Invalid form data.' };
   }
 
-  const email = parsed.data.email.toLowerCase();
-  const existingUser = await db.user.findUnique({ where: { email } });
-  if (existingUser) {
-    return { error: 'User with this email already exists.' };
+  const res = await fetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(parsed.data)
+  });
+
+  const data = (await res.json().catch(() => ({}))) as { error?: string };
+
+  if (!res.ok) {
+    return { error: data.error ?? 'Registration failed.' };
   }
 
-  const passwordHash = await hash(parsed.data.password, 12);
-
-  await db.user.create({
-    data: {
-      name: parsed.data.name,
-      email,
-      passwordHash,
-      role: parsed.data.role
-    }
-  });
-
-  await signIn('credentials', {
-    email,
+  const signInResult = await signIn('credentials', {
+    email: parsed.data.email.toLowerCase(),
     password: parsed.data.password,
-    redirectTo: '/dashboard'
+    redirect: false
   });
 
+  if (signInResult?.error) {
+    return { error: 'Account created but sign-in failed. Try logging in.' };
+  }
+
+  window.location.assign('/dashboard');
   return {};
 }
 
@@ -82,18 +79,16 @@ export async function loginAction(
     return { error: 'Invalid email or password format.' };
   }
 
-  try {
-    await signIn('credentials', {
-      email: parsed.data.email.toLowerCase(),
-      password: parsed.data.password,
-      redirectTo: parsed.data.callbackUrl || '/dashboard'
-    });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      return { error: 'Incorrect email or password.' };
-    }
-    throw error;
+  const signInResult = await signIn('credentials', {
+    email: parsed.data.email.toLowerCase(),
+    password: parsed.data.password,
+    redirect: false
+  });
+
+  if (signInResult?.error) {
+    return { error: 'Incorrect email or password.' };
   }
 
+  window.location.assign(parsed.data.callbackUrl || '/dashboard');
   return {};
 }

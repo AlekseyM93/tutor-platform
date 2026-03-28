@@ -1,18 +1,13 @@
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { LoginForm } from '@/components/login-form';
 
-type LoginPageProps = {
-  searchParams: Promise<{ callbackUrl?: string }>;
-};
-
-export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const session = await auth();
+export default async function LoginPage() {
+  const session = await getSession();
   if (session?.user) {
     redirect('/dashboard');
   }
-
-  const params = await searchParams;
 
   return (
     <main className="container-shell py-12">
@@ -22,7 +17,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           Access your tutor platform dashboard and lesson rooms.
         </p>
         <div className="mt-6">
-          <LoginForm callbackUrl={params.callbackUrl} />
+          <Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />}>
+            <LoginForm />
+          </Suspense>
         </div>
       </section>
     </main>

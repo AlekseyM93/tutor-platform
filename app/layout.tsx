@@ -1,9 +1,8 @@
 import './globals.css';
-import Link from 'next/link';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { auth, signOut } from '@/lib/auth';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { getSession } from '@/lib/auth';
+import { SiteHeader } from '@/components/site-header';
 
 export const metadata: Metadata = {
   title: 'Tutor Platform',
@@ -11,12 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth();
-
-  async function logout() {
-    'use server';
-    await signOut({ redirectTo: '/' });
-  }
+  const session = await getSession();
 
   return (
     <html lang="ru" suppressHydrationWarning>
@@ -40,33 +34,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         />
       </head>
       <body>
-        <header className="border-b border-slate-200/70 backdrop-blur dark:border-white/10">
-          <div className="container-shell flex items-center justify-between gap-4 py-5">
-            <Link href="/" className="text-xl font-bold tracking-tight">
-              Tutor Platform
-            </Link>
-            <nav className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
-              <Link href="/dashboard">Dashboard</Link>
-              <Link href="/rooms/demo-room">Demo room</Link>
-              {!session?.user ? (
-                <>
-                  <Link href="/auth/login">Sign in</Link>
-                  <Link href="/auth/register">Register</Link>
-                </>
-              ) : (
-                <form action={logout}>
-                  <button
-                    type="submit"
-                    className="cursor-pointer text-slate-700 dark:text-slate-200"
-                  >
-                    Sign out
-                  </button>
-                </form>
-              )}
-              <ThemeToggle />
-            </nav>
-          </div>
-        </header>
+        <SiteHeader user={session?.user} />
         {children}
       </body>
     </html>

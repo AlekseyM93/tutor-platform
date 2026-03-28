@@ -3,6 +3,10 @@ import { Whiteboard } from '@/components/whiteboard';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
+export function generateStaticParams() {
+  return [{ id: 'demo-room' }, { id: 'physics-room' }];
+}
+
 export default async function RoomPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session?.user) {

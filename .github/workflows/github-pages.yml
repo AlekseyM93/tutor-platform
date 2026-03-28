@@ -1,0 +1,62 @@
+# Собирает статический экспорт Next.js и публикует в GitHub Pages.
+# В настройках репозитория: Settings → Pages → Build and deployment → Source: GitHub Actions.
+#
+# Сайт проекта: https://<user>.github.io/<repo>/
+# Для репозитория вида <user>.github.io (сайт на корневом домене) задайте в workflow переменную NEXT_BASE_PATH пустой (см. ниже).
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prisma generate
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://user:pass@localhost:5432/db
+
+      - name: Build static site for Pages
+        run: npm run build:github-pages
+        env:
+          NEXT_STATIC_EXPORT: 'true'
+          # Имя репозитория в URL: /tutor-platform/ и т.п.
+          NEXT_BASE_PATH: /${{ github.event.repository.name }}
+          # Если репозиторий username.github.io (сайт в корне домена) — задайте NEXT_BASE_PATH: ''
+          DATABASE_URL: postgresql://user:pass@localhost:5432/db
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

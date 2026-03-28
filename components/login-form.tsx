@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
 import { loginAction, type AuthActionState } from '@/app/auth/actions';
 import { AuthSubmitButton } from '@/components/auth-submit-button';
@@ -11,12 +12,14 @@ type LoginFormProps = {
   callbackUrl?: string;
 };
 
-export function LoginForm({ callbackUrl }: LoginFormProps) {
+export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
+  const searchParams = useSearchParams();
+  const callbackUrl = callbackUrlProp ?? searchParams.get('callbackUrl') ?? '';
   const [state, formAction] = useActionState(loginAction, initialState);
 
   return (
     <form action={formAction} className="space-y-4">
-      <input type="hidden" name="callbackUrl" value={callbackUrl ?? ''} />
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm text-slate-700 dark:text-slate-300">

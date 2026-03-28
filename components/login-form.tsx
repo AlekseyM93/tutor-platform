@@ -18,44 +18,51 @@ export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
   const [state, formAction] = useActionState(loginAction, initialState);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-5">
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm text-slate-700 dark:text-slate-300">
-          Email
+        <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+          Электронная почта
         </label>
         <input
           id="email"
           name="email"
           type="email"
+          autoComplete="email"
           required
-          className="w-full rounded-xl border border-slate-200/60 bg-slate-50 px-4 py-3 text-slate-900 dark:border-white/15 dark:bg-slate-950 dark:text-slate-100"
+          placeholder="имя@почта.ru"
+          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="password" className="text-sm text-slate-700 dark:text-slate-300">
-          Password
+        <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+          Пароль
         </label>
         <input
           id="password"
           name="password"
           type="password"
           minLength={8}
+          autoComplete="current-password"
           required
-          className="w-full rounded-xl border border-slate-200/60 bg-slate-50 px-4 py-3 text-slate-900 dark:border-white/15 dark:bg-slate-950 dark:text-slate-100"
+          placeholder="Не менее 8 символов"
+          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
       </div>
 
-      {state.error ? <p className="text-sm text-rose-400">{state.error}</p> : null}
+      {state.error ? <p className="text-sm font-medium text-rose-500 dark:text-rose-400">{state.error}</p> : null}
 
-      <AuthSubmitButton label="Sign in" pendingLabel="Signing in..." />
+      <AuthSubmitButton label="Войти" pendingLabel="Входим…" />
 
-      <p className="text-sm text-slate-600 dark:text-slate-300">
-        No account yet?{' '}
-        <Link href="/auth/register" className="text-indigo-600 dark:text-indigo-300 underline-offset-4 hover:underline">
-          Create one
+      <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+        Нет аккаунта?{' '}
+        <Link
+          href="/auth/register"
+          className="font-semibold text-violet-600 underline-offset-4 hover:underline dark:text-violet-300"
+        >
+          Зарегистрироваться
         </Link>
       </p>
     </form>

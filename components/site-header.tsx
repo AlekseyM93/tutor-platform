@@ -10,26 +10,49 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ user }: SiteHeaderProps) {
   return (
-    <header className="border-b border-slate-200/70 backdrop-blur dark:border-white/10">
-      <div className="container-shell flex items-center justify-between gap-4 py-5">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Tutor Platform
+    <header className="site-header sticky top-0 z-50">
+      <div className="container-shell flex flex-wrap items-center justify-between gap-4 py-4">
+        <Link
+          href="/"
+          className="font-display text-lg font-bold tracking-tight text-slate-900 transition-opacity hover:opacity-85 dark:text-white md:text-xl"
+        >
+          РепетиторПлатформа
         </Link>
-        <nav className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/rooms/demo-room">Demo room</Link>
+        <nav className="flex flex-wrap items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <Link
+            href="/dashboard"
+            className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
+          >
+            Панель
+          </Link>
+          <Link
+            href="/rooms/demo-room"
+            className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
+          >
+            Демо-комната
+          </Link>
           {!user ? (
             <>
-              <Link href="/auth/login">Sign in</Link>
-              <Link href="/auth/register">Register</Link>
+              <Link
+                href="/auth/login"
+                className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
+              >
+                Вход
+              </Link>
+              <Link
+                href="/auth/register"
+                className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
+              >
+                Регистрация
+              </Link>
             </>
           ) : (
             <button
               type="button"
-              className="cursor-pointer text-slate-700 dark:text-slate-200"
+              className="cursor-pointer rounded-lg px-3 py-2 transition-colors hover:bg-rose-500/10 hover:text-rose-700 dark:hover:bg-white/5 dark:hover:text-rose-200"
               onClick={() => signOut({ redirectTo: '/' })}
             >
-              Sign out
+              Выйти
             </button>
           )}
           <ThemeToggle />

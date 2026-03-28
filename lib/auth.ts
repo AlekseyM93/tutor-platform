@@ -22,10 +22,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   providers: [
     Credentials({
-      name: 'Email and password',
+      name: 'Почта и пароль',
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
+        email: { label: 'Электронная почта', type: 'email' },
+        password: { label: 'Пароль', type: 'password' }
       },
       async authorize(credentials) {
         const parsed = loginSchema.safeParse(credentials);

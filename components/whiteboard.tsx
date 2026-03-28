@@ -9,10 +9,12 @@ export function Whiteboard() {
     <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold">Интерактивная доска</h3>
-          <p className="text-sm text-slate-400">Сейчас это MVP-заглушка для замены на tldraw/Excalidraw.</p>
+          <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white">Интерактивная доска</h3>
+          <p className="text-sm text-slate-400">
+            Сейчас это демо-заглушка — её можно заменить на tldraw или Excalidraw.
+          </p>
         </div>
-        <span className="badge">whiteboard</span>
+        <span className="badge">Доска</span>
       </div>
 
       <textarea

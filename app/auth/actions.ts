@@ -36,7 +36,7 @@ export async function registerAction(
   });
 
   if (!parsed.success) {
-    return { error: 'Invalid form data.' };
+    return { error: 'Проверьте корректность полей формы.' };
   }
 
   const res = await fetch('/api/register', {
@@ -48,7 +48,7 @@ export async function registerAction(
   const data = (await res.json().catch(() => ({}))) as { error?: string };
 
   if (!res.ok) {
-    return { error: data.error ?? 'Registration failed.' };
+    return { error: data.error ?? 'Не удалось зарегистрироваться.' };
   }
 
   const signInResult = await signIn('credentials', {
@@ -58,7 +58,7 @@ export async function registerAction(
   });
 
   if (signInResult?.error) {
-    return { error: 'Account created but sign-in failed. Try logging in.' };
+    return { error: 'Аккаунт создан, но вход не удался. Попробуйте войти вручную.' };
   }
 
   window.location.assign('/dashboard');
@@ -76,7 +76,7 @@ export async function loginAction(
   });
 
   if (!parsed.success) {
-    return { error: 'Invalid email or password format.' };
+    return { error: 'Некорректный формат почты или пароля.' };
   }
 
   const signInResult = await signIn('credentials', {
@@ -86,7 +86,7 @@ export async function loginAction(
   });
 
   if (signInResult?.error) {
-    return { error: 'Incorrect email or password.' };
+    return { error: 'Неверная почта или пароль.' };
   }
 
   window.location.assign(parsed.data.callbackUrl || '/dashboard');

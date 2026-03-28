@@ -65,7 +65,7 @@ body {
   font-family: var(--font-unbounded), var(--font-manrope), ui-sans-serif, sans-serif;
 }
 
-/* Текст от темы: работает всегда, если на <html> есть класс .dark (скрипт темы) */
+/* Текст от темы (переменные + жёсткий fallback — Tailwind v4 может перекрывать color позже в бандле) */
 .text-theme {
   color: var(--foreground);
 }
@@ -76,6 +76,36 @@ body {
 
 .text-theme-subtle {
   color: var(--text-subtle);
+}
+
+html.dark .text-theme,
+html[data-theme='dark'] .text-theme {
+  color: #f8fafc !important;
+}
+
+html.dark .text-theme-muted,
+html[data-theme='dark'] .text-theme-muted {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-theme-subtle,
+html[data-theme='dark'] .text-theme-subtle {
+  color: #a8b8d8 !important;
+}
+
+html:not(.dark) .text-theme,
+html[data-theme='light'] .text-theme {
+  color: #0c1222 !important;
+}
+
+html:not(.dark) .text-theme-muted,
+html[data-theme='light'] .text-theme-muted {
+  color: #475569 !important;
+}
+
+html:not(.dark) .text-theme-subtle,
+html[data-theme='light'] .text-theme-subtle {
+  color: #64748b !important;
 }
 
 .container-shell {

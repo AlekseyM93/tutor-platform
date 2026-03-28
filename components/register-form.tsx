@@ -13,7 +13,7 @@ export function RegisterForm() {
   return (
     <form action={formAction} className="space-y-5">
       <div className="space-y-2">
-        <label htmlFor="name" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="name" className="text-theme-muted text-sm font-medium">
           Имя и фамилия
         </label>
         <input
@@ -24,12 +24,12 @@ export function RegisterForm() {
           autoComplete="name"
           required
           placeholder="Как к вам обращаться"
-          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="text-theme w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="email" className="text-theme-muted text-sm font-medium">
           Электронная почта
         </label>
         <input
@@ -39,12 +39,12 @@ export function RegisterForm() {
           autoComplete="email"
           required
           placeholder="имя@почта.ru"
-          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="text-theme w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="password" className="text-theme-muted text-sm font-medium">
           Пароль
         </label>
         <input
@@ -55,12 +55,12 @@ export function RegisterForm() {
           autoComplete="new-password"
           required
           placeholder="Не менее 8 символов"
-          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="text-theme w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="role" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="role" className="text-theme-muted text-sm font-medium">
           Роль
         </label>
         <select
@@ -68,7 +68,7 @@ export function RegisterForm() {
           name="role"
           required
           defaultValue="STUDENT"
-          className="w-full cursor-pointer rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100"
+          className="text-theme w-full cursor-pointer rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50"
         >
           <option value="STUDENT">Ученик</option>
           <option value="TUTOR">Репетитор</option>
@@ -79,7 +79,7 @@ export function RegisterForm() {
 
       <AuthSubmitButton label="Создать аккаунт" pendingLabel="Создаём аккаунт…" />
 
-      <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+      <p className="text-theme-muted text-center text-sm">
         Уже есть аккаунт?{' '}
         <Link
           href="/auth/login"

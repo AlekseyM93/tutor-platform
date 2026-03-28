@@ -65,16 +65,16 @@ export function VideoRoom({ roomName, userName }: Props) {
     <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white">Видеокомната</h3>
-          <p className="text-sm text-slate-400">Комната: {roomName}</p>
+          <h3 className="font-display text-theme text-xl font-bold">Видеокомната</h3>
+          <p className="text-theme-muted text-sm">Комната: {roomName}</p>
         </div>
         <span className="badge">{status}</span>
       </div>
 
-      <div className="grid min-h-[320px] place-items-center rounded-2xl border border-dashed border-white/15 bg-black/20 p-6 text-center text-slate-300">
+      <div className="grid min-h-[320px] place-items-center rounded-2xl border border-dashed border-white/15 bg-black/20 p-6 text-center">
         <div>
-          <div className="text-lg font-semibold">Интерфейс LiveKit на уровне SDK</div>
-          <p className="mt-2 max-w-xl text-sm text-slate-400">
+          <div className="text-theme text-lg font-semibold">Интерфейс LiveKit на уровне SDK</div>
+          <p className="text-theme-muted mt-2 max-w-xl text-sm">
             Для продакшена добавьте сетку участников, чат, выбор устройств, демонстрацию экрана,
             индикаторы записи и удобный сценарий переподключения.
           </p>

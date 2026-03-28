@@ -14,11 +14,11 @@ export function SiteHeader({ user }: SiteHeaderProps) {
       <div className="container-shell flex flex-wrap items-center justify-between gap-4 py-4">
         <Link
           href="/"
-          className="font-display text-lg font-bold tracking-tight text-slate-900 transition-opacity hover:opacity-85 dark:text-white md:text-xl"
+          className="font-display text-theme text-lg font-bold tracking-tight transition-opacity hover:opacity-85 md:text-xl"
         >
           РепетиторПлатформа
         </Link>
-        <nav className="flex flex-wrap items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <nav className="text-theme-muted flex flex-wrap items-center gap-1 text-sm font-medium">
           <Link
             href="/dashboard"
             className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"

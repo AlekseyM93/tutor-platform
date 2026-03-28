@@ -25,13 +25,13 @@ export default async function RoomPage({ params }: { params: Promise<{ id: strin
     <main className="container-shell space-y-8 py-8 md:py-10">
       <section className="card flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">
             Комната урока
           </div>
-          <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
+          <h1 className="font-display text-theme mt-3 text-3xl font-bold tracking-tight md:text-4xl">
             Комната: {id}
           </h1>
-          <p className="mt-3 text-slate-600 dark:text-slate-400">
+          <p className="text-theme-muted mt-3">
             Участник: {session.user.name ?? session.user.email} · роль: {roleLabel(session.user.role)}
           </p>
         </div>

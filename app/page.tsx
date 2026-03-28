@@ -35,10 +35,10 @@ export default async function HomePage() {
       <section className="card grid gap-10 p-8 md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:p-12">
         <div className="space-y-6">
           <span className="badge">Стартовый каркас для разработки</span>
-          <h1 className="font-display max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 dark:text-white md:text-5xl lg:text-6xl">
+          <h1 className="font-display text-theme max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
             Платформа для репетиторов и учеников: видео, доска и материалы в одном месте.
           </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          <p className="text-theme-muted max-w-2xl text-lg leading-relaxed">
             Готовая основа для развития продукта: комнаты, уроки, база знаний, записи и загрузка
             файлов — с понятным кодом под доработку в Cursor.
           </p>
@@ -66,24 +66,24 @@ export default async function HomePage() {
         </div>
         <div className="card grid gap-4 border border-violet-500/15 bg-gradient-to-br from-violet-500/10 via-transparent to-fuchsia-500/5 p-6 shadow-none md:p-7">
           <div className="rounded-2xl border border-violet-400/25 bg-white/50 p-5 dark:bg-slate-900/40">
-            <div className="text-sm font-medium text-slate-600 dark:text-slate-400">Сценарий урока</div>
-            <div className="font-display mt-2 text-2xl font-semibold text-slate-900 dark:text-white">
+            <div className="text-theme-muted text-sm font-medium">Сценарий урока</div>
+            <div className="font-display text-theme mt-2 text-2xl font-semibold">
               Алгебра · 1 на 1
             </div>
-            <div className="mt-2 text-sm text-slate-600 dark:text-slate-400">Сегодня · 18:00 · 60 минут</div>
+            <div className="text-theme-muted mt-2 text-sm">Сегодня · 18:00 · 60 минут</div>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-slate-200/70 bg-white/40 p-4 dark:border-white/10 dark:bg-slate-950/30">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <div className="text-theme-subtle text-xs font-semibold uppercase tracking-wider">
                 Статус
               </div>
-              <div className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">Комната готова</div>
+              <div className="text-theme mt-1 text-lg font-semibold">Комната готова</div>
             </div>
             <div className="rounded-2xl border border-slate-200/70 bg-white/40 p-4 dark:border-white/10 dark:bg-slate-950/30">
-              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <div className="text-theme-subtle text-xs font-semibold uppercase tracking-wider">
                 Материалы
               </div>
-              <div className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">12 файлов</div>
+              <div className="text-theme mt-1 text-lg font-semibold">12 файлов</div>
             </div>
           </div>
         </div>
@@ -100,10 +100,10 @@ export default async function HomePage() {
               <div className="mb-4 inline-flex rounded-xl bg-violet-500/10 p-3 text-violet-600 dark:text-violet-300">
                 <Icon className="h-7 w-7" aria-hidden />
               </div>
-              <h2 className="font-display text-xl font-semibold text-slate-900 dark:text-white">
+              <h2 className="font-display text-theme text-xl font-semibold">
                 {feature.title}
               </h2>
-              <p className="mt-2 leading-relaxed text-slate-600 dark:text-slate-400">{feature.description}</p>
+              <p className="text-theme-muted mt-2 leading-relaxed">{feature.description}</p>
             </div>
           );
         })}

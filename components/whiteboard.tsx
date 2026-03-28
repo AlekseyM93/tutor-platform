@@ -9,8 +9,8 @@ export function Whiteboard() {
     <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white">Интерактивная доска</h3>
-          <p className="text-sm text-slate-400">
+          <h3 className="font-display text-theme text-xl font-bold">Интерактивная доска</h3>
+          <p className="text-theme-muted text-sm">
             Сейчас это демо-заглушка — её можно заменить на tldraw или Excalidraw.
           </p>
         </div>
@@ -20,7 +20,7 @@ export function Whiteboard() {
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        className="min-h-[320px] w-full rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-sm outline-none"
+        className="text-theme min-h-[320px] w-full rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-sm outline-none"
       />
     </div>
   );

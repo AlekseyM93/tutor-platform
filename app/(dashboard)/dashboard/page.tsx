@@ -55,13 +55,13 @@ export default async function DashboardPage() {
     <main className="container-shell space-y-8 py-10 md:py-12">
       <section className="card flex flex-col gap-6 p-8 md:flex-row md:items-end md:justify-between md:p-10">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">
             Рабочая панель
           </div>
-          <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
+          <h1 className="font-display text-theme mt-3 text-3xl font-bold tracking-tight md:text-4xl">
             Здравствуйте, {session.user.name ?? session.user.email}
           </h1>
-          <p className="mt-3 max-w-xl text-slate-600 dark:text-slate-400">
+          <p className="text-theme-muted mt-3 max-w-xl">
             Роль: {roleLabel(session.user.role)}. Здесь вы управляете уроками, материалами и записями.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default async function DashboardPage() {
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="card p-6 md:p-8">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">Ближайшие уроки</h2>
+            <h2 className="font-display text-theme text-2xl font-bold">Ближайшие уроки</h2>
             <span className="badge">
               {lessons.length} {lessonWord(lessons.length)}
             </span>
@@ -91,8 +91,8 @@ export default async function DashboardPage() {
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <div className="text-lg font-semibold text-slate-900 dark:text-white">{lesson.title}</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400">{lesson.time}</div>
+                    <div className="text-theme text-lg font-semibold">{lesson.title}</div>
+                    <div className="text-theme-subtle text-sm">{lesson.time}</div>
                   </div>
                   <span className="badge">{lessonStatusLabel[lesson.status]}</span>
                 </div>
@@ -108,8 +108,8 @@ export default async function DashboardPage() {
 
         <div className="space-y-6">
           <div className="card p-6 md:p-8">
-            <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">База знаний</h2>
-            <div className="mt-5 space-y-3 text-slate-600 dark:text-slate-400">
+            <h2 className="font-display text-theme text-2xl font-bold">База знаний</h2>
+            <div className="text-theme-muted mt-5 space-y-3">
               {materials.map((material) => (
                 <div
                   key={material}
@@ -122,8 +122,8 @@ export default async function DashboardPage() {
           </div>
 
           <div className="card p-6 md:p-8">
-            <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">Записи уроков</h2>
-            <p className="mt-4 leading-relaxed text-slate-600 dark:text-slate-400">
+            <h2 className="font-display text-theme text-2xl font-bold">Записи уроков</h2>
+            <p className="text-theme-muted mt-4 leading-relaxed">
               После настройки LiveKit Egress и вебхука здесь появятся видео, статусы обработки и ссылки для
               просмотра.
             </p>

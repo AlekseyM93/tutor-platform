@@ -9,6 +9,7 @@
 :root {
   --background-gradient: radial-gradient(120% 80% at 50% -20%, #e8eaff 0%, #f1f5f9 42%, #fafbfc 100%);
   --foreground: #0c1222;
+  --text-subtle: #64748b;
   --card-background: rgba(255, 255, 255, 0.78);
   --card-border: rgba(15, 23, 42, 0.08);
   --muted: #64748b;
@@ -28,10 +29,11 @@
 
 html.dark {
   --background-gradient: radial-gradient(100% 70% at 50% -10%, #1e1b4b 0%, #0f172a 38%, #020617 100%);
-  --foreground: #eef2ff;
-  --card-background: rgba(15, 23, 42, 0.55);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --muted: #94a3b8;
+  /* Явный светлый текст на тёмном фоне (надёжнее, чем только Tailwind dark:) */
+  --foreground: #f8fafc;
+  --card-background: rgba(30, 41, 59, 0.72);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --muted: #cbd5e1;
   --border: rgba(255, 255, 255, 0.1);
   --accent: #8b7cff;
   --accent-soft: rgba(139, 124, 255, 0.15);
@@ -44,6 +46,7 @@ html.dark {
   --header-bg: rgba(15, 23, 42, 0.72);
   --header-border: rgba(255, 255, 255, 0.06);
   --glow: rgba(139, 124, 255, 0.2);
+  --text-subtle: #a8b8d8;
 }
 
 html,
@@ -60,6 +63,19 @@ body {
 
 .font-display {
   font-family: var(--font-unbounded), var(--font-manrope), ui-sans-serif, sans-serif;
+}
+
+/* Текст от темы: работает всегда, если на <html> есть класс .dark (скрипт темы) */
+.text-theme {
+  color: var(--foreground);
+}
+
+.text-theme-muted {
+  color: var(--muted);
+}
+
+.text-theme-subtle {
+  color: var(--text-subtle);
 }
 
 .container-shell {

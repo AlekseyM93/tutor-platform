@@ -22,7 +22,7 @@ export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="email" className="text-theme-muted text-sm font-medium">
           Электронная почта
         </label>
         <input
@@ -32,12 +32,12 @@ export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
           autoComplete="email"
           required
           placeholder="имя@почта.ru"
-          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="text-theme w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor="password" className="text-theme-muted text-sm font-medium">
           Пароль
         </label>
         <input
@@ -48,7 +48,7 @@ export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
           autoComplete="current-password"
           required
           placeholder="Не менее 8 символов"
-          className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 text-slate-900 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="text-theme w-full rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm outline-none transition-[border,box-shadow] placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 dark:border-white/12 dark:bg-slate-950/50 dark:placeholder:text-slate-500"
         />
       </div>
 
@@ -56,7 +56,7 @@ export function LoginForm({ callbackUrl: callbackUrlProp }: LoginFormProps) {
 
       <AuthSubmitButton label="Войти" pendingLabel="Входим…" />
 
-      <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+      <p className="text-theme-muted text-center text-sm">
         Нет аккаунта?{' '}
         <Link
           href="/auth/register"

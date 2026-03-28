@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Logs
+*.log
+
+# Prisma
+tsconfig.tsbuildinfo
+
+# Local env (keep template)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+

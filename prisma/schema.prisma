@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TUTOR
+  STUDENT
+}
+
+enum LessonStatus {
+  DRAFT
+  SCHEDULED
+  LIVE
+  FINISHED
+  CANCELED
+}
+
+enum RecordingStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum AccessScope {
+  PRIVATE
+  COURSE
+  PLATFORM
+}
+
+model User {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  name              String?
+  emailVerified     DateTime?
+  image             String?
+  passwordHash      String?
+  role              Role               @default(STUDENT)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  accounts          Account[]
+  sessions          Session[]
+  authenticators    Authenticator[]
+  tutorLessons      Lesson[]           @relation("TutorLessons")
+  studentLessons    LessonStudent[]
+  uploadedMaterials KnowledgeMaterial[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+model Lesson {
+  id            String          @id @default(cuid())
+  title         String
+  description   String?
+  scheduledAt   DateTime
+  durationMin   Int             @default(60)
+  status        LessonStatus    @default(SCHEDULED)
+  roomName      String          @unique
+  tutorId       String
+  tutor         User            @relation("TutorLessons", fields: [tutorId], references: [id])
+  students      LessonStudent[]
+  recordings    Recording[]
+  whiteboard    WhiteboardState?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model LessonStudent {
+  id        String   @id @default(cuid())
+  lessonId  String
+  studentId String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, studentId])
+}
+
+model Recording {
+  id          String          @id @default(cuid())
+  lessonId     String
+  storageKey   String
+  playbackUrl  String?
+  status       RecordingStatus @default(PENDING)
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  lesson       Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model KnowledgeMaterial {
+  id           String      @id @default(cuid())
+  title        String
+  description  String?
+  storageKey   String
+  mimeType     String
+  sizeBytes    Int
+  accessScope  AccessScope @default(PRIVATE)
+  uploadedById String
+  uploadedBy   User        @relation(fields: [uploadedById], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model WhiteboardState {
+  id         String   @id @default(cuid())
+  lessonId    String   @unique
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  snapshot    Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "regexp": "^\\/tutor-platform(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
+    "originalSource": "/dashboard/:path*"
+  },
+  {
+    "regexp": "^\\/tutor-platform(?:\\/(_next\\/data\\/[^/]{1,}))?\\/rooms(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
+    "originalSource": "/rooms/:path*"
+  },
+  {
+    "regexp": "^\\/tutor-platform(?:\\/(_next\\/data\\/[^/]{1,}))?\\/auth\\/login(\\.json)?[\\/#\\?]?$",
+    "originalSource": "/auth/login"
+  },
+  {
+    "regexp": "^\\/tutor-platform(?:\\/(_next\\/data\\/[^/]{1,}))?\\/auth\\/register(\\.json)?[\\/#\\?]?$",
+    "originalSource": "/auth/register"
+  }
+]

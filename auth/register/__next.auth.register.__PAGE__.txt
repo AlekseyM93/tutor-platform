@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[94909,["/tutor-platform/_next/static/chunks/13e8692ce4c4d42f.js","/tutor-platform/_next/static/chunks/a7f97e22b8007a00.js","/tutor-platform/_next/static/chunks/8cca2e8aac5ce46f.js"],"RegisterForm"]
+3:I[97367,["/tutor-platform/_next/static/chunks/ff1a16fafef87110.js","/tutor-platform/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"VGYKHurULieMDZd8ZHBWd","rsc":["$","$1","c",{"children":[["$","main",null,{"className":"container-shell py-12 md:py-16","children":["$","section",null,{"className":"card mx-auto max-w-md p-8 md:p-10","children":[["$","h1",null,{"className":"font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl","children":"Регистрация"}],["$","p",null,{"className":"mt-3 text-slate-600 dark:text-slate-400","children":"Создайте аккаунт репетитора или ученика — дальше можно заходить в уроки и панель."}],["$","div",null,{"className":"mt-8","children":["$","$L2",null,{}]}]]}]}],[["$","script","script-0",{"src":"/tutor-platform/_next/static/chunks/a7f97e22b8007a00.js","async":true}],["$","script","script-1",{"src":"/tutor-platform/_next/static/chunks/8cca2e8aac5ce46f.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null

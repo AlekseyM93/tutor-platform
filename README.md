@@ -12,8 +12,12 @@ Production-oriented платформа для репетиторов и учен
 
 1. Запушьте код с `.github/workflows/github-pages.yml`.
 2. **Actions** → **Deploy to GitHub Pages** → дождитесь успеха (или **Run workflow**).
-3. **Settings → Pages**: **Source** — *Deploy from a branch*, **Branch** — **master** (или **main**), **Folder** — **`/docs`** (не `/ (root)`).
+3. **Settings → Pages**: **Source** — *Deploy from a branch*, далее строго так:
+   - **Branch: `master`** (или **`main`** — как у вас основная ветка),
+   - **Folder: `/docs`** (именно **docs**, не «корень»).
 4. Сайт: `https://<логин>.github.io/tutor-platform/` (со слэшем в конце).
+
+**Частая ошибка (снова README вместо сайта):** в Pages выбраны **`gh-pages`** и папка **`/(root)`**. В текущей настройке репозитория workflow **не обновляет** ветку `gh-pages` — сборка пишется в **`docs/` на `master`**. Поэтому либо переключите Pages на **`master` + `/docs`**, либо ветка `gh-pages` останется со старым содержимым / README.
 
 Пуши, которые меняют только `docs/`, **не перезапускают** workflow (чтобы не было бесконечного цикла коммитов).
 

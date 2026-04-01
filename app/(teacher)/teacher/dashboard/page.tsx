@@ -24,11 +24,7 @@ const lessonStatusLabel: Record<(typeof lessons)[number]['status'], string> = {
   SCHEDULED: 'Запланирован'
 };
 
-const materials = [
-  'Алгебра 8 класс.pdf',
-  'Формулы по тригонометрии.docx',
-  'Домашнее задание №4.pdf'
-];
+const materials = ['Алгебра 8 класс.pdf', 'Формулы по тригонометрии.docx', 'Домашнее задание №4.pdf'];
 
 function roleLabel(role: string) {
   if (role === 'TUTOR') return 'Репетитор';
@@ -45,19 +41,20 @@ function lessonWord(n: number) {
   return 'уроков';
 }
 
-export default async function DashboardPage() {
+export default async function TeacherDashboardPage() {
   const session = await getSession();
   if (!session?.user) {
     redirect('/auth/login');
+  }
+  if (session.user.role === 'STUDENT') {
+    redirect('/student/dashboard');
   }
 
   return (
     <main className="container-shell space-y-8 py-10 md:py-12">
       <section className="card flex flex-col gap-6 p-8 md:flex-row md:items-end md:justify-between md:p-10">
         <div>
-          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">
-            Рабочая панель
-          </div>
+          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">Кабинет репетитора</div>
           <h1 className="font-display text-theme mt-3 text-3xl font-bold tracking-tight md:text-4xl">
             Здравствуйте, {session.user.name ?? session.user.email}
           </h1>
@@ -111,10 +108,7 @@ export default async function DashboardPage() {
             <h2 className="font-display text-theme text-2xl font-bold">База знаний</h2>
             <div className="text-theme-muted mt-5 space-y-3">
               {materials.map((material) => (
-                <div
-                  key={material}
-                  className="rounded-2xl border border-slate-200/60 px-4 py-3 dark:border-white/10"
-                >
+                <div key={material} className="rounded-2xl border border-slate-200/60 px-4 py-3 dark:border-white/10">
                   {material}
                 </div>
               ))}
@@ -124,8 +118,7 @@ export default async function DashboardPage() {
           <div className="card p-6 md:p-8">
             <h2 className="font-display text-theme text-2xl font-bold">Записи уроков</h2>
             <p className="text-theme-muted mt-4 leading-relaxed">
-              После настройки LiveKit Egress и вебхука здесь появятся видео, статусы обработки и ссылки для
-              просмотра.
+              После настройки LiveKit Egress и вебхука здесь появятся видео, статусы обработки и ссылки для просмотра.
             </p>
           </div>
         </div>

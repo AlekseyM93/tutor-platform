@@ -198,3 +198,80 @@ html.dark .btn-primary {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 124, 255, 0.14);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(139, 124, 255, 0);
+  }
+}
+
+.anim-reveal-up {
+  opacity: 0;
+  animation: revealUp 760ms cubic-bezier(0.2, 0.65, 0.2, 1) forwards;
+}
+
+.anim-delay-1 {
+  animation-delay: 90ms;
+}
+
+.anim-delay-2 {
+  animation-delay: 180ms;
+}
+
+.anim-delay-3 {
+  animation-delay: 280ms;
+}
+
+.anim-float-soft {
+  animation: floatSoft 6s ease-in-out infinite;
+}
+
+.anim-pulse-glow {
+  animation: pulseGlow 2.2s ease-in-out infinite;
+}
+
+.card-animated {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.card-animated:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-reveal-up,
+  .anim-float-soft,
+  .anim-pulse-glow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

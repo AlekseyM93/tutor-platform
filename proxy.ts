@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 
-const protectedPrefixes = ['/dashboard', '/rooms'];
+const protectedPrefixes = ['/dashboard', '/rooms', '/teacher', '/student', '/admin'];
 const authPages = ['/auth/login', '/auth/register'];
 
 export default auth((req) => {
@@ -25,5 +25,13 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/rooms/:path*', '/auth/login', '/auth/register']
+  matcher: [
+    '/dashboard/:path*',
+    '/rooms/:path*',
+    '/teacher/:path*',
+    '/student/:path*',
+    '/admin/:path*',
+    '/auth/login',
+    '/auth/register'
+  ]
 };

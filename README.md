@@ -2,6 +2,24 @@
 
 Production-oriented платформа для репетиторов и учеников: уроки, видеокомнаты, материалы и записи.
 
+## Архитектура (модульный монолит)
+
+Рефакторинг выполняется итеративно в сторону clean modular monolith:
+
+- `app/` — только маршруты, layout и route handlers;
+- `modules/` — доменная логика (первым вынесен `auth`);
+- `lib/` — shared инфраструктура;
+- `components/` — общий UI;
+- `docs/architecture.md` — архитектурная карта и план итераций.
+
+Текущие role-based маршруты:
+
+- `/teacher/dashboard`
+- `/student/dashboard`
+- `/dashboard` (redirect по роли)
+- `/admin` (foundation)
+- `/rooms/[lessonId]`
+
 ## Сайт на GitHub Pages (ветка master / main)
 
 Сайт собирается в CI и **кладётся в папку `docs/`** на той же ветке, с которой вы пушите (**master** или **main**). Так в **Pages** можно оставить **именно master**, без отдельной ветки `gh-pages`.

@@ -4,7 +4,7 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export function generateStaticParams() {
-  return [{ id: 'demo-room' }, { id: 'physics-room' }];
+  return [{ lessonId: 'demo-room' }, { lessonId: 'physics-room' }];
 }
 
 function roleLabel(role: string) {
@@ -14,22 +14,20 @@ function roleLabel(role: string) {
   return role;
 }
 
-export default async function RoomPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function RoomPage({ params }: { params: Promise<{ lessonId: string }> }) {
   const session = await getSession();
   if (!session?.user) {
     redirect('/auth/login');
   }
-  const { id } = await params;
+  const { lessonId } = await params;
 
   return (
     <main className="container-shell space-y-8 py-8 md:py-10">
       <section className="card flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
-          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">
-            Комната урока
-          </div>
+          <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">Комната урока</div>
           <h1 className="font-display text-theme mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-            Комната: {id}
+            Комната: {lessonId}
           </h1>
           <p className="text-theme-muted mt-3">
             Участник: {session.user.name ?? session.user.email} · роль: {roleLabel(session.user.role)}
@@ -46,7 +44,7 @@ export default async function RoomPage({ params }: { params: Promise<{ id: strin
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
-        <VideoRoom roomName={id} userName={session.user.name ?? session.user.email ?? 'Пользователь'} />
+        <VideoRoom roomName={lessonId} userName={session.user.name ?? session.user.email ?? 'Пользователь'} />
         <Whiteboard />
       </section>
     </main>

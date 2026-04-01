@@ -101,7 +101,7 @@ npm run dev
 - Login: `http://localhost:3000/auth/login`
 - Register: `http://localhost:3000/auth/register`
 - Dashboard: `http://localhost:3000/dashboard`
-- Demo room: `http://localhost:3000/rooms/demo-room`
+- Демо-комната (после seed): `http://localhost:3000/rooms/demo-lesson-room`
 - MinIO Console: `http://localhost:9001`
 
 ## Демо-аккаунты

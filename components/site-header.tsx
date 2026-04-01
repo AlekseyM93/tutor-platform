@@ -1,8 +1,18 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { ThemeToggle } from '@/components/theme-toggle';
+
+const ThemeToggle = dynamic(() => import('@/components/theme-toggle').then((m) => m.ThemeToggle), {
+  ssr: false,
+  loading: () => (
+    <span
+      className="inline-block h-9 min-w-[5.5rem] shrink-0 rounded-full bg-sky-100/80 dark:bg-slate-800/60"
+      aria-hidden
+    />
+  )
+});
 
 type SiteHeaderProps = {
   user?: { name?: string | null; email?: string | null } | null;
@@ -14,42 +24,24 @@ export function SiteHeader({ user }: SiteHeaderProps) {
       <div className="container-shell flex flex-wrap items-center justify-between gap-4 py-4">
         <Link
           href="/"
-          className="font-display text-theme text-lg font-bold tracking-tight transition-opacity hover:opacity-85 md:text-xl"
+          className="font-display site-brand text-xl font-extrabold tracking-tight md:text-2xl"
         >
           РепетиторПлатформа
         </Link>
-        <nav className="text-theme-muted flex flex-wrap items-center gap-1 text-sm font-medium">
-          <Link
-            href="/dashboard"
-            className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
-          >
-            Панель
-          </Link>
-          <Link
-            href="/rooms/demo-room"
-            className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
-          >
-            Демо-комната
-          </Link>
+        <nav className="flex flex-wrap items-center gap-1 text-sm">
           {!user ? (
             <>
-              <Link
-                href="/auth/login"
-                className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
-              >
+              <Link href="/auth/login" className="nav-link">
                 Вход
               </Link>
-              <Link
-                href="/auth/register"
-                className="rounded-lg px-3 py-2 transition-colors hover:bg-violet-500/10 hover:text-violet-700 dark:hover:bg-white/5 dark:hover:text-violet-200"
-              >
+              <Link href="/auth/register" className="nav-link">
                 Регистрация
               </Link>
             </>
           ) : (
             <button
               type="button"
-              className="cursor-pointer rounded-lg px-3 py-2 transition-colors hover:bg-rose-500/10 hover:text-rose-700 dark:hover:bg-white/5 dark:hover:text-rose-200"
+              className="nav-link cursor-pointer"
               onClick={() => signOut({ redirectTo: '/' })}
             >
               Выйти

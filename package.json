@@ -7,7 +7,7 @@
     "build": "next build",
     "build:github-pages": "npx tsx scripts/build-github-pages.ts",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
@@ -33,10 +33,13 @@
     "zod": "^4.1.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.2",
     "prisma": "^6.16.0",
     "tailwindcss": "^4.1.12",
     "tsx": "^4.19.4",

@@ -1,11 +1,8 @@
+import { notFound, redirect } from 'next/navigation';
 import { VideoRoom } from '@/components/video-room';
 import { Whiteboard } from '@/components/whiteboard';
 import { getSession } from '@/lib/auth';
-import { redirect } from 'next/navigation';
-
-export function generateStaticParams() {
-  return [{ lessonId: 'demo-room' }, { lessonId: 'physics-room' }];
-}
+import { getLessonByRoomName, assertUserCanJoinLessonRoom } from '@/modules/lessons/server/access';
 
 function roleLabel(role: string) {
   if (role === 'TUTOR') return 'Репетитор';
@@ -19,7 +16,17 @@ export default async function RoomPage({ params }: { params: Promise<{ lessonId:
   if (!session?.user) {
     redirect('/auth/login');
   }
-  const { lessonId } = await params;
+
+  const { lessonId: roomName } = await params;
+  const lesson = await getLessonByRoomName(roomName);
+  if (!lesson) {
+    notFound();
+  }
+
+  const allowed = await assertUserCanJoinLessonRoom(lesson, session.user.id, session.user.role);
+  if (!allowed) {
+    notFound();
+  }
 
   return (
     <main className="container-shell space-y-8 py-8 md:py-10">
@@ -27,10 +34,13 @@ export default async function RoomPage({ params }: { params: Promise<{ lessonId:
         <div>
           <div className="text-theme-subtle text-xs font-semibold uppercase tracking-[0.2em]">Комната урока</div>
           <h1 className="font-display text-theme mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-            Комната: {lessonId}
+            {lesson.title}
           </h1>
-          <p className="text-theme-muted mt-3">
-            Участник: {session.user.name ?? session.user.email} · роль: {roleLabel(session.user.role)}
+          <p className="text-theme-muted mt-3 text-sm">
+            Комната LiveKit: <code className="text-xs">{roomName}</code>
+          </p>
+          <p className="text-theme-muted mt-2">
+            Участник: {session.user.name ?? session.user.email} · {roleLabel(session.user.role)}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -44,7 +54,7 @@ export default async function RoomPage({ params }: { params: Promise<{ lessonId:
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
-        <VideoRoom roomName={lessonId} userName={session.user.name ?? session.user.email ?? 'Пользователь'} />
+        <VideoRoom roomName={roomName} userName={session.user.name ?? session.user.email ?? 'Пользователь'} />
         <Whiteboard />
       </section>
     </main>

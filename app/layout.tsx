@@ -1,13 +1,20 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Manrope, Unbounded } from 'next/font/google';
+import { Manrope, Nunito, Unbounded } from 'next/font/google';
 import { getSession } from '@/lib/auth';
 import { SiteHeader } from '@/components/site-header';
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-manrope',
+  display: 'swap'
+});
+
+const nunito = Nunito({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-nunito',
+  weight: ['500', '600', '700', '800'],
   display: 'swap'
 });
 
@@ -27,7 +34,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const session = await getSession();
 
   return (
-    <html lang="ru" suppressHydrationWarning className={`${manrope.variable} ${unbounded.variable}`}>
+    <html
+      lang="ru"
+      suppressHydrationWarning
+      className={`${manrope.variable} ${nunito.variable} ${unbounded.variable}`}
+    >
       <head>
         <Script
           id="theme-init"
@@ -47,9 +58,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           }}
         />
       </head>
-      <body className="min-h-dvh font-sans antialiased selection:bg-violet-500/25 selection:text-inherit">
-        <SiteHeader user={session?.user} />
-        {children}
+      <body className="uchi-body min-h-dvh font-sans antialiased selection:bg-sky-500/25 selection:text-inherit">
+        <div className="uchi-app flex min-h-dvh flex-col">
+          <SiteHeader user={session?.user} />
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</div>
+        </div>
       </body>
     </html>
   );

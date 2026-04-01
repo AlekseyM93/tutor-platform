@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { LessonStatus, PrismaClient, Role } from '@prisma/client';
 import { hash } from 'bcryptjs';
 
 const db = new PrismaClient();
@@ -44,6 +44,36 @@ async function main() {
     role: Role.STUDENT,
     password: 'StudentPass123'
   });
+
+  const tutor = await db.user.findUnique({ where: { email: 'tutor@tutor.local' } });
+  const student = await db.user.findUnique({ where: { email: 'student@tutor.local' } });
+  if (tutor && student) {
+    const demoRoomName = 'demo-lesson-room';
+    const lesson = await db.lesson.upsert({
+      where: { roomName: demoRoomName },
+      create: {
+        title: 'Демонстрационный урок',
+        description: 'Урок из seed: репетитор и ученик уже привязаны.',
+        scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        durationMin: 60,
+        status: LessonStatus.SCHEDULED,
+        roomName: demoRoomName,
+        tutorId: tutor.id
+      },
+      update: {
+        title: 'Демонстрационный урок',
+        tutorId: tutor.id
+      }
+    });
+
+    await db.lessonStudent.upsert({
+      where: {
+        lessonId_studentId: { lessonId: lesson.id, studentId: student.id }
+      },
+      create: { lessonId: lesson.id, studentId: student.id },
+      update: {}
+    });
+  }
 }
 
 main()

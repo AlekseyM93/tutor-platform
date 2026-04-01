@@ -1,28 +1,10 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
-
-const lessons = [
-  {
-    id: 'lesson-1',
-    title: 'Математика — квадратные уравнения',
-    time: 'Сегодня · 18:00',
-    room: 'demo-room',
-    status: 'LIVE' as const
-  },
-  {
-    id: 'lesson-2',
-    title: 'Физика — законы Ньютона',
-    time: 'Завтра · 16:00',
-    room: 'physics-room',
-    status: 'SCHEDULED' as const
-  }
-];
-
-const lessonStatusLabel: Record<(typeof lessons)[number]['status'], string> = {
-  LIVE: 'В эфире',
-  SCHEDULED: 'Запланирован'
-};
+import { listLessonsForTutor } from '@/modules/lessons/server/queries';
+import { LESSON_STATUS_LABEL } from '@/modules/lessons/constants';
+import { formatLessonDateTime } from '@/lib/format/lesson-dates';
+import { InviteStudentForm } from '@/components/invite-student-form';
 
 const materials = ['Алгебра 8 класс.pdf', 'Формулы по тригонометрии.docx', 'Домашнее задание №4.pdf'];
 
@@ -50,6 +32,8 @@ export default async function TeacherDashboardPage() {
     redirect('/student/dashboard');
   }
 
+  const lessons = await listLessonsForTutor(session.user.id);
+
   return (
     <main className="container-shell space-y-8 py-10 md:py-12">
       <section className="card flex flex-col gap-6 p-8 md:flex-row md:items-end md:justify-between md:p-10">
@@ -59,48 +43,75 @@ export default async function TeacherDashboardPage() {
             Здравствуйте, {session.user.name ?? session.user.email}
           </h1>
           <p className="text-theme-muted mt-3 max-w-xl">
-            Роль: {roleLabel(session.user.role)}. Здесь вы управляете уроками, материалами и записями.
+            Роль: {roleLabel(session.user.role)}. Управление уроками из базы данных; приглашайте учеников по email.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/rooms/demo-room" className="btn-primary">
-            Открыть комнату
-          </Link>
-          <button type="button" className="btn-secondary">
+          <Link href="/teacher/lessons/new" className="btn-primary">
             Создать урок
-          </button>
+          </Link>
         </div>
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="card p-6 md:p-8">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="font-display text-theme text-2xl font-bold">Ближайшие уроки</h2>
+            <h2 className="font-display text-theme text-2xl font-bold">Мои уроки</h2>
             <span className="badge">
               {lessons.length} {lessonWord(lessons.length)}
             </span>
           </div>
-          <div className="space-y-4">
-            {lessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className="rounded-2xl border border-slate-200/70 bg-white/30 p-5 dark:border-white/10 dark:bg-slate-950/20"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <div className="text-theme text-lg font-semibold">{lesson.title}</div>
-                    <div className="text-theme-subtle text-sm">{lesson.time}</div>
+          {lessons.length === 0 ? (
+            <p className="text-theme-muted">
+              Пока нет уроков. Нажмите «Создать урок», чтобы добавить первое занятие.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {lessons.map((lesson) => (
+                <div
+                  key={lesson.id}
+                  className="rounded-2xl border border-slate-200/70 bg-white/30 p-5 dark:border-white/10 dark:bg-slate-950/20"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <div className="text-theme text-lg font-semibold">{lesson.title}</div>
+                      <div className="text-theme-subtle text-sm">
+                        {formatLessonDateTime(lesson.scheduledAt)} · {lesson.durationMin} мин · комната:{' '}
+                        <code className="text-xs">{lesson.roomName}</code>
+                      </div>
+                    </div>
+                    <span className="badge">{LESSON_STATUS_LABEL[lesson.status]}</span>
                   </div>
-                  <span className="badge">{lessonStatusLabel[lesson.status]}</span>
+                  {lesson.description ? (
+                    <p className="text-theme-muted mt-2 text-sm">{lesson.description}</p>
+                  ) : null}
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <Link href={`/rooms/${lesson.roomName}`} className="btn-secondary inline-block">
+                      Войти в комнату
+                    </Link>
+                  </div>
+                  <div className="border-theme-muted/20 mt-4 border-t pt-4">
+                    <p className="text-theme-subtle mb-2 text-xs font-medium uppercase tracking-wide">
+                      Пригласить ученика
+                    </p>
+                    <InviteStudentForm lessonId={lesson.id} />
+                    {lesson.students.length > 0 ? (
+                      <ul className="text-theme-muted mt-3 list-inside list-disc text-sm">
+                        {lesson.students.map((s) => (
+                          <li key={s.id}>
+                            {s.student.name ?? s.student.email}
+                            <span className="text-theme-subtle"> ({s.student.email})</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-theme-subtle mt-2 text-sm">Пока никого не приглашено</p>
+                    )}
+                  </div>
                 </div>
-                <div className="mt-4">
-                  <Link href={`/rooms/${lesson.room}`} className="btn-secondary inline-block">
-                    Войти в комнату
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="space-y-6">
